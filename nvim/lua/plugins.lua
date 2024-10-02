@@ -1,4 +1,5 @@
 vim.cmd("autocmd BufNewFile,BufRead *.tf set filetype=terraform")
+local copilot_enabled = os.getenv("COPILOT_ENABLED")
 
 return {
   -- telescope
@@ -244,6 +245,7 @@ return {
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/cmp-buffer" },
   { "saadparwaiz1/cmp_luasnip" },
+  { "mattn/vim-goimports" },
   {
     "shellRaining/hlchunk.nvim",
     event = { "UIEnter", "BufReadPre", "BufNewFile" },
@@ -353,4 +355,41 @@ return {
       }
     end
   },
+  (copilot_enabled == '1') and {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          keymap = {
+            accept = "<Tab>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dissmiss = "<M-Enter>",
+          },
+        },
+      })
+    end,
+  } or nil,
+  (copilot_enabled == '1') and {
+    "nvim-lua/plenary.nvim",
+    event = "InsertEnter",
+  } or nil,
+  (copilot_enabled == '1') and {
+    "CopilotC-nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" },
+      { "nvim-lua/plenary.nvim" },
+    },
+    build = "make tiktoken",
+    opts = {},
+  },
+  { "tpope/vim-fugitive" },
 }
+
