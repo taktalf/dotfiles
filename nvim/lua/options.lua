@@ -27,7 +27,7 @@ local options = {
 	shiftwidth = 2,
 	tabstop = 2,
 	cursorline = true,
-  cursorcolumn = true,
+	cursorcolumn = true,
 	number = true,
 	relativenumber = false,
 	numberwidth = 4,
@@ -40,11 +40,11 @@ local options = {
 	scrolloff = 8,
 	sidescrolloff = 8,
 	guifont = "monospace:h17",
-  modifiable = true,
+	modifiable = true,
 	splitbelow = false, -- オンのとき、ウィンドウを横分割すると新しいウィンドウはカレントウィンドウの下に開かれる
 	splitright = false, -- オンのとき、ウィンドウを縦分割すると新しいウィンドウはカレントウィンドウの右に開かれる
-  showbreak = "=>",
-  showmatch = true
+	showbreak = "=>",
+	showmatch = true
 }
 
 vim.opt.shortmess:append("c")
