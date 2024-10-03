@@ -385,6 +385,9 @@ return {
       }
     end
   },
+  { "tpope/vim-fugitive" },
+  { "morhetz/gruvbox" },
+  { "sainnhe/sonokai" },
   (copilot_enabled == '1') and {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
@@ -419,8 +422,6 @@ return {
     },
     build = "make tiktoken",
     opts = {},
-  },
-  { "tpope/vim-fugitive" },
-  { "morhetz/gruvbox" },
+  } or nil,
 }
 
