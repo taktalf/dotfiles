@@ -172,6 +172,7 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = { "terraformls", "pyright" },
       })
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
       require("mason-lspconfig").setup_handlers {
         function (server_name)
           require("lspconfig")[server_name].setup {
@@ -184,19 +185,15 @@ return {
               set("n", "C-]", "<cmd>lua vim.lsp.buf.definition()<CR>")
               set("n", "S-K", "<cmd>lua vim.lsp.buf.hover()<CR>")
               set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
-              set("n", "<space>lh", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-              set("n", "<space>lwa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>")
-              set("n", "<space>lwr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>")
-              set("n", "<space>lwl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>")
-              set("n", "<space>lD", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
-              set("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
-              set("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+              set("n", "gf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+              set("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+              set("n", "gn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+              set("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>")
               set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-              set("n", "<space>le", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>")
-              set("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
-              set("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
+              set("n", "ge", "<cmd>lua vim.lsp.diagnostic.open_float()<CR>")
+              set("n", "g[", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
+              set("n", "g]", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
               set("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>")
-              set("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>")
 
               -- 特定のLSPサーバーに対して特別な設定を行う
               if server_name == "lua_ls" then
@@ -223,9 +220,11 @@ return {
                       },
                     },
                   },
+                  capabilities = capabilities,
                 }
               end
             end,
+            capabilities = capabilities,
           }
         end,
       }
@@ -239,8 +238,39 @@ return {
     end,
     ft = { 'terraform' }  -- terraform ファイルのみに適用
   },
+  -- lua関連
   { "L3MON4D3/LuaSnip" },
-  { "hrsh7th/nvim-cmp" },
+  { 
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      -- Buffer source for nvim-cmp
+      "hrsh7th/cmp-buffer",
+      -- Command-line source for nvim-cmp
+      "hrsh7th/cmp-cmdline",
+      -- Snippet Engine
+      "L3MON4D3/LuaSnip",
+      -- Snippet completion source
+      "saadparwaiz1/cmp_luasnip",
+    },
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+          end,
+        },
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'buffer' },
+          { name = 'path' },
+          { name = 'cmdline' },
+          { name = 'luasnip' },
+        },
+      })
+    end
+  },
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/cmp-buffer" },
   { "saadparwaiz1/cmp_luasnip" },
@@ -353,4 +383,41 @@ return {
       }
     end
   },
+  (copilot_enabled == '1') and {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          keymap = {
+            accept = "<Tab>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dissmiss = "<M-Enter>",
+          },
+        },
+      })
+    end,
+  } or nil,
+  (copilot_enabled == '1') and {
+    "nvim-lua/plenary.nvim",
+    event = "InsertEnter",
+  } or nil,
+  (copilot_enabled == '1') and {
+    "CopilotC-nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" },
+      { "nvim-lua/plenary.nvim" },
+    },
+    build = "make tiktoken",
+    opts = {},
+  },
+  { "tpope/vim-fugitive" },
+  { "morhetz/gruvbox" },
 }
