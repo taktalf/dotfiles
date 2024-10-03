@@ -1,4 +1,5 @@
 vim.cmd("autocmd BufNewFile,BufRead *.tf set filetype=terraform")
+local copilot_enabled = os.getenv("COPILOT_ENABLED")
 
 return {
   -- telescope
@@ -274,6 +275,7 @@ return {
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/cmp-buffer" },
   { "saadparwaiz1/cmp_luasnip" },
+  { "mattn/vim-goimports" },
   {
     "shellRaining/hlchunk.nvim",
     event = { "UIEnter", "BufReadPre", "BufNewFile" },
@@ -421,3 +423,4 @@ return {
   { "tpope/vim-fugitive" },
   { "morhetz/gruvbox" },
 }
+

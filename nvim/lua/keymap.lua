@@ -1,2 +1,5 @@
+vim.keymap.set('n', '<S-h>', '0', { silent = true })
+vim.keymap.set('n', '<S-l>', '$', { silent = true })
 vim.keymap.set('n', '<C-j>', ':bprev<CR>', { silent = true })
 vim.keymap.set('n', '<C-k>', ':bnext<CR>', { silent = true })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', {noremap = true, silent = true })
