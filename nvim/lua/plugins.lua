@@ -386,6 +386,13 @@ return {
     end
   },
   { "tpope/vim-fugitive" },
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+  },
   { "morhetz/gruvbox" },
   { "sainnhe/sonokai" },
   (copilot_enabled == '1') and {
