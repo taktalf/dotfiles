@@ -54,6 +54,13 @@ return {
         end,
         desc = "Open File Browser with the path of the current buffer",
       },
+      {
+        "<leader>gc",
+        function()
+          local builtin = require("telescope.builtin")
+          builtin.git_commits({})
+        end,
+      },
       config = function(_, opts)
         local telescope = require("telescope")
         local fb_actions = require("telescope").extensions.file_browser.actions
@@ -264,6 +271,15 @@ return {
             require("luasnip").lsp_expand(args.body)
           end,
         },
+        mapping = {
+          ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.close(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true })
+        },
         sources = {
           { name = 'nvim_lsp' },
           { name = 'buffer' },
@@ -397,6 +413,10 @@ return {
   },
   { "morhetz/gruvbox" },
   { "sainnhe/sonokai" },
+  {
+    "nvim-lua/plenary.nvim",
+    event = "InsertEnter",
+  },
   (copilot_enabled == '1') and {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
@@ -417,10 +437,6 @@ return {
         },
       })
     end,
-  } or nil,
-  (copilot_enabled == '1') and {
-    "nvim-lua/plenary.nvim",
-    event = "InsertEnter",
   } or nil,
   (copilot_enabled == '1') and {
     "CopilotC-nvim/CopilotChat.nvim",
