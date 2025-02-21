@@ -1,6 +1,8 @@
 -- スニペットエンジン関連のプラグイン
 
 -- LuaSnip: 高機能なスニペットエンジン
-{
-  "L3MON4D3/LuaSnip",
-},
+return {
+  {
+    "L3MON4D3/LuaSnip",
+  },
+}
