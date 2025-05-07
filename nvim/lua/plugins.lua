@@ -1,4 +1,3 @@
-
 return {
   require("plugins.lsp"),
   require("plugins.telescope"),
@@ -11,4 +10,6 @@ return {
   require("plugins.hlchunk"),
   require("plugins.markdown_preview"),
   require("plugins.colorscheme"),
+  require("plugins.copilot"),
+  require("plugins.chatgpt"),
 }
